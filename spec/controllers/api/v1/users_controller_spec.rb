@@ -1,13 +1,16 @@
 require 'rails_helper'
 
 describe Api::V1::UsersController do
-  before(:each) { request.headers['Accept'] = "application/vnd.marketplace.v1" }
+  before(:each) do
+    request.headers['Accept'] = "application/vnd.marketplace.v1, #{Mime::JSON}"
+    request.headers['Content-Type'] = Mime::JSON.to_s
+  end
 
   describe "GET #show" do
     let(:user){ FactoryGirl.create :user }
 
     before(:each) do
-      get :show, id: user.id, format: :json
+      get :show, id: user.id
     end
 
     it "returns the information about a reporter on a hash" do
@@ -23,7 +26,7 @@ describe Api::V1::UsersController do
       let(:attributes){attributes_for(:user)}
 
       before(:each) do
-        post :create, {user: attributes}, format: :json
+        post :create, {user: attributes}
       end
 
       it 'renders the json representation for the user record just created' do
@@ -37,7 +40,7 @@ describe Api::V1::UsersController do
       let(:attributes){attributes_for(:user, email: nil)}
 
       before(:each) do
-        post :create, {user: attributes}, format: :json
+        post :create, {user: attributes}
       end
 
       it 'renders an error json' do
@@ -56,7 +59,7 @@ describe Api::V1::UsersController do
     let!(:user) {create(:user)}
     context 'successful' do
       before(:each) do
-        patch :update, {id: user.id, user: { email: "newmail@test.com"}}, format: :json
+        patch :update, {id: user.id, user: { email: "newmail@test.com"}}
       end
 
       it 'renders the updated user json' do
@@ -67,7 +70,7 @@ describe Api::V1::UsersController do
     end
     context 'unsuccessful' do
       before(:each) do
-        patch :update, { id: user.id, user: { email: "bademail.com" } }, format: :json
+        patch :update, { id: user.id, user: { email: "bademail.com" } }
       end
 
       it 'renders an error json' do
@@ -86,7 +89,7 @@ describe Api::V1::UsersController do
     let!(:user){create(:user)}
     context 'successful' do
       before(:each) do
-        delete :destroy, { id: user.id}, format: :json
+        delete :destroy, { id: user.id}
       end
 
       it 'destroys the resource' do
