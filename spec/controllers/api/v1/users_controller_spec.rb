@@ -50,6 +50,35 @@ describe Api::V1::UsersController do
       end
       it {should respond_with 422}
     end
+  end
 
+  describe 'PUT/PATCH #update' do
+    let!(:user) {create(:user)}
+    context 'successful' do
+      before(:each) do
+        patch :update, {id: user.id, user: { email: "newmail@test.com"}}, format: :json
+      end
+
+      it 'renders the updated user json' do
+        user_response = JSON.parse(response.body, symbolize_names: true)
+        expect(user_response[:email]).to eq("newmail@test.com")
+      end
+      it {should respond_with 200}
+    end
+    context 'unsuccessful' do
+      before(:each) do
+        patch :update, { id: user.id, user: { email: "bademail.com" } }, format: :json
+      end
+
+      it 'renders an error json' do
+        user_response = JSON.parse(response.body, symbolize_names: true)
+        expect(user_response). to have_key(:errors)
+      end
+      it 'renders json with reason of failure' do
+        user_response = JSON.parse(response.body, symbolize_names: true)
+        expect(user_response[:errors][:email]).to include "is invalid"
+      end
+      it {should respond_with 422}
+    end
   end
 end
