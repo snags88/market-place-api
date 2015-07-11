@@ -81,4 +81,18 @@ describe Api::V1::UsersController do
       it {should respond_with 422}
     end
   end
+
+  describe 'DELETE #destroy' do
+    let!(:user){create(:user)}
+    context 'successful' do
+      before(:each) do
+        delete :destroy, { id: user.id}, format: :json
+      end
+
+      it 'destroys the resource' do
+        expect{User.find(user.id)}.to raise_error(ActiveRecord::RecordNotFound)
+      end
+      it {should respond_with 204}
+    end
+  end
 end
