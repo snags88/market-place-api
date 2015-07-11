@@ -11,7 +11,7 @@ describe Api::V1::UsersController do
     end
 
     it "returns the information about a reporter on a hash" do
-      user_response = JSON.parse(response.body, symbolize_names: true)
+      user_response = json_response
       expect(user_response[:email]).to eq(user.email)
     end
 
@@ -27,7 +27,7 @@ describe Api::V1::UsersController do
       end
 
       it 'renders the json representation for the user record just created' do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:email]).to eq(attributes[:email])
       end
       it {should respond_with 201}
@@ -41,11 +41,11 @@ describe Api::V1::UsersController do
       end
 
       it 'renders an error json' do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response).to have_key(:errors)
       end
       it 'renders json with reason of failure' do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:errors][:email]).to include("can't be blank")
       end
       it {should respond_with 422}
@@ -60,7 +60,7 @@ describe Api::V1::UsersController do
       end
 
       it 'renders the updated user json' do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:email]).to eq("newmail@test.com")
       end
       it {should respond_with 200}
@@ -71,11 +71,11 @@ describe Api::V1::UsersController do
       end
 
       it 'renders an error json' do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response). to have_key(:errors)
       end
       it 'renders json with reason of failure' do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:errors][:email]).to include "is invalid"
       end
       it {should respond_with 422}
