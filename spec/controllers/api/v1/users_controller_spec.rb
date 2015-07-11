@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::UsersController do
+describe Api::V1::UsersController, type: :controller do
   describe "GET #show" do
     let(:user){ FactoryGirl.create :user }
 
@@ -54,6 +54,7 @@ describe Api::V1::UsersController do
     let!(:user) {create(:user)}
     context 'successful' do
       before(:each) do
+        api_authorization_header(user.auth_token)
         patch :update, {id: user.id, user: { email: "newmail@test.com"}}
       end
 
@@ -65,6 +66,7 @@ describe Api::V1::UsersController do
     end
     context 'unsuccessful' do
       before(:each) do
+        api_authorization_header(user.auth_token)
         patch :update, { id: user.id, user: { email: "bademail.com" } }
       end
 
@@ -84,6 +86,7 @@ describe Api::V1::UsersController do
     let!(:user){create(:user)}
     context 'successful' do
       before(:each) do
+        api_authorization_header(user.auth_token)
         delete :destroy, { id: user.id}
       end
 
