@@ -18,5 +18,6 @@ group :development, :test do
   gem 'faker'
   gem 'database_cleaner'
   gem 'awesome_print'
+  gem 'shoulda-matchers'
 end
 
