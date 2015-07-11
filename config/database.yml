@@ -1,0 +1,27 @@
+development:
+  adapter: postgresql
+  database:market_place_api_development
+  pool: 5
+  timeout: 5000
+  encoding: unicode
+
+test:
+  adapter: postgresql
+  database:market_place_api_test
+  pool: 5
+  timeout: 5000
+  encoding: unicode
+
+staging:
+  adapter: postgresql
+  database:market_place_api_staging
+  pool: 5
+  timeout: 5000
+  encoding: unicode
+
+production:
+  adapter: postgresql
+  database:market_place_api_production
+  pool: 5
+  timeout: 5000
+  encoding: unicode
