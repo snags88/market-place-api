@@ -1,6 +1,11 @@
 class Api::V1::UsersController < ApiController
   respond_to :json
 
+  def index
+    user = User.all
+    render json: user, status: 201, location: api_user_path(user)
+  end
+
   def show
     respond_with User.find(params[:id])
   end
