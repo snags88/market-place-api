@@ -29,4 +29,24 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
     end
   end
 
+  describe 'DELETE #destroy' do
+    let(:user){create(:user)}
+
+    before(:each) do
+      sign_in(user)
+    end
+    let!(:original_auth_token){user.auth_token}
+
+    it 'changes the user auth_token' do
+      delete :destroy, id: user.auth_token
+      user.reload
+      expect(user.auth_token).to_not eq(original_auth_token)
+    end
+
+    it 'responds with the correct status' do
+      delete :destroy, id: user.auth_token
+      should respond_with 204
+    end
+  end
+
 end
